@@ -1,0 +1,7 @@
+# publish only the site itself
+/*
+!/index.html
+!/assets/
+!/.nojekyll
+!/.gitignore
+!/README.md
