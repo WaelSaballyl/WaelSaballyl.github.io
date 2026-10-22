@@ -267,7 +267,7 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
 .cursor{position:fixed;left:0;top:0;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--fg);mix-blend-mode:difference;pointer-events:none;z-index:90;transition:width .3s,height .3s,margin .3s;opacity:0}
 .cursor.big{width:56px;height:56px;margin:-28px 0 0 -28px}
 #sparks{position:fixed;left:0;top:0;width:100vw;height:100vh;pointer-events:none;z-index:91}
-@media (hover:none){.cursor,#sparks{display:none}}
+@media (hover:none){.cursor,#sparks{display:none}body::after{display:none}}
 
 @media (max-width:1000px){
   .brand{display:none}
@@ -711,7 +711,7 @@ function build() {
   const fs = Math.min(W * (W < 700 ? .34 : .28), H * .44);
   o.font = `400 ${fs}px "Instrument Serif"`; o.textAlign = 'center'; o.textBaseline = 'middle';
   o.fillText('Wael', W / 2, H * (W < 700 ? .3 : .34));
-  const data = o.getImageData(0, 0, W, H).data, gap = 5, next = [];
+  const data = o.getImageData(0, 0, W, H).data, gap = W < 700 ? 6 : 5, next = [];
   for (let y = 0; y < H; y += gap) for (let x = 0; x < W; x += gap)
     if (data[(y * W + x) * 4 + 3] > 128) next.push([x, y]);
   pts = next.map(([x, y], i) => {
@@ -740,7 +740,9 @@ function frame() {
 }
 function start() { if (!running) { running = true; requestAnimationFrame(frame); } }
 new IntersectionObserver(([e]) => { heroOn = e.isIntersecting; if (heroOn && pts.length) start(); }).observe(cv);
-document.fonts.load('400 100px "Instrument Serif"').then(() => { build(); start(); gsap.to(intro, {v: 1, duration: 2.4, ease: 'power3.out', delay: .2}); });
+const introDone = new Promise(res => { window.__introDone = res; });
+if (document.documentElement.classList.contains('seen') || reduce) window.__introDone();
+Promise.all([document.fonts.load('400 100px "Instrument Serif"'), introDone]).then(() => { build(); start(); gsap.to(intro, {v: 1, duration: 2.2, ease: 'power3.out'}); });
 addEventListener('resize', () => { clearTimeout(window._rb); window._rb = setTimeout(build, 200); });
 cv.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
 cv.addEventListener('pointerleave', () => { mouse.x = mouse.y = -9999; });
@@ -920,12 +922,13 @@ if (fine && !reduce) {
 // ---------- intro curtain: greetings, then the page lifts (after dennissnellenberg.com) ----------
 (() => {
   const ld = document.getElementById('loader');
-  if (document.documentElement.classList.contains('seen') || reduce) { ld.remove(); return; }
-  const words = ['Hello', 'مرحبا', 'Hi there', 'أهلاً', 'Welcome'], el = document.getElementById('hello');
+  if (document.documentElement.classList.contains('seen') || reduce) { ld.remove(); window.__introDone && window.__introDone(); return; }
+  const words = ['Hello', 'مرحبا', 'Hi there', 'أهلاً'], el = document.getElementById('hello');
   lenis && lenis.stop();
   let i = 0;
-  const id = setInterval(() => { i++; if (i < words.length) el.textContent = words[i]; }, 230);
-  const tl = gsap.timeline({delay: words.length * .23, onComplete: () => { ld.remove(); lenis && lenis.start(); try { sessionStorage.setItem('seen', '1'); } catch (e) {} }});
+  const id = setInterval(() => { i++; if (i < words.length) el.textContent = words[i]; }, 200);
+  const tl = gsap.timeline({delay: words.length * .2, onComplete: () => { ld.remove(); lenis && lenis.start(); try { sessionStorage.setItem('seen', '1'); } catch (e) {} }});
+  tl.add(() => window.__introDone && window.__introDone(), '+=0.45');
   tl.add(() => clearInterval(id))
     .to(ld.querySelector('p'), {y: -30, opacity: 0, duration: .35, ease: 'power2.in'})
     .to(ld, {yPercent: -100, duration: .9, ease: 'power4.inOut'}, '<.1')
@@ -937,10 +940,13 @@ if (fine && !reduce) {
 (() => {
   const row = document.getElementById('bandRow');
   if (reduce) return;
-  let x = 0, dir = -1, boost = 0;
+  let x = 0, dir = -1, boost = 0, w = 0, on = false;
+  const measure = () => { w = row.firstElementChild.offsetWidth; };
+  document.fonts.ready.then(measure); addEventListener('resize', measure);
+  new IntersectionObserver(([e]) => { on = e.isIntersecting; }).observe(row);
   if (lenis) lenis.on('scroll', e => { if (e.velocity) { dir = e.velocity > 0 ? -1 : 1; boost = Math.min(Math.abs(e.velocity) * .6, 14); } });
   gsap.ticker.add(() => {
-    const w = row.firstElementChild.offsetWidth;
+    if (!on || !w) return;
     x += dir * (.6 + boost); boost *= .92;
     if (x <= -w) x += w; if (x > 0) x -= w;
     row.style.transform = `translate3d(${x}px,0,0)`;
