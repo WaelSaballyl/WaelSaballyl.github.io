@@ -2,13 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>
+(() => {
+  const requested = new URLSearchParams(location.search).get('lang');
+  let saved; try { saved = localStorage.getItem('portfolio-language'); } catch (e) {}
+  const lang = requested === 'ar' || requested === 'en' ? requested : saved === 'ar' ? 'ar' : 'en';
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+})();
+</script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Wael Saballyl · Data, software and IT</title>
 <meta name="description" content="Data analyst and software engineer in Jeddah. Dashboards, data pipelines and tools I built, with what each one taught me.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <link rel="canonical" href="https://waelsaballyl.github.io/">
 <meta property="og:url" content="https://waelsaballyl.github.io/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230D0D0B'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='40' text-anchor='middle' fill='%23EDE8DE'%3EW%3C/text%3E%3Ccircle cx='50' cy='46' r='4' fill='%23FF5A1F'/%3E%3C/svg%3E">
@@ -304,6 +313,34 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
 }
 @media (max-width:420px){.pill a{padding:8px 8px;font-size:12px}.filter button i{display:none}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (prefers-reduced-motion:reduce){.avail i,.live i,.pulse .d i.k{animation:none}}
+
+/* Language control and Arabic layout. Slider coordinates stay physical. */
+.language-switch{display:grid;place-items:center;min-width:44px;min-height:44px;position:fixed;inset-inline-end:clamp(16px,3vw,36px);top:22px;z-index:43;padding:8px 14px;border:1px solid #45413A;border-radius:999px;background:var(--bg2);color:var(--fg);font:500 14px/1.5 "Noto Sans Arabic",Geist,sans-serif}
+.language-switch:hover{border-color:var(--hot)}
+html[lang="ar"] body{font-family:"Noto Sans Arabic",system-ui,sans-serif}
+html[lang="ar"] :is(.mono,.filter button,.tags span,.kpis small,.metrics small){font-family:"Noto Sans Arabic",system-ui,sans-serif;letter-spacing:0;text-transform:none}
+html[lang="ar"] :is(.h2,.fcard h3,.pc h3,.sheet h2,.step h3,.contact h2,.band span,.lead em){font-family:"Noto Sans Arabic",system-ui,sans-serif;font-style:normal;line-height:1.45;letter-spacing:0}
+html[lang="ar"] .h2{font-size:clamp(36px,5.5vw,76px)}
+html[lang="ar"] .contact h2{font-size:clamp(54px,11vw,150px)}
+html[lang="ar"] .loader p{font-family:"Noto Sans Arabic",sans-serif}
+html[lang="ar"] em{font-style:normal}
+html[lang="ar"] :is(.lead,.line){line-height:1.7}
+html[lang="ar"] .brand{left:auto;right:clamp(16px,3vw,36px)}
+html[lang="ar"] .pc{text-align:right}
+html[lang="ar"] .pc .open{right:auto;left:14px}
+html[lang="ar"] .live{right:auto;left:14px}
+html[lang="ar"] .tools small{margin-right:0;margin-left:4px}
+html[lang="ar"] .panel .sheet{right:auto;left:0;border-left:0;border-right:1px solid var(--line)}
+html[lang="ar"] .panel .close{float:left}
+html[lang="ar"] .pc:hover .more i{transform:translateX(-5px)}
+html[lang="ar"] .billing .fill{transform-origin:right}
+html[lang="ar"] :is(.fact b[data-count],.kpis b,.metrics b,.count b,.billing .big){direction:ltr;unicode-bidi:isolate}
+html[lang="ar"] .fact b:not([data-count]){font-family:"Noto Sans Arabic",sans-serif;font-size:clamp(28px,3vw,42px);line-height:1.4}
+html[lang="ar"] .band{direction:ltr}
+html[lang="ar"] .band span{direction:rtl;unicode-bidi:isolate;font-size:clamp(44px,7vw,100px)}
+@media(max-width:1000px){.language-switch{top:76px;inset-inline-end:12px;padding:6px 12px}.subpill{max-width:calc(100vw - 180px)}}
+@media(max-width:860px){.language-switch{top:58px}}
+@media(max-width:600px){html[lang="ar"] .roles span{font-size:10px;padding:5px 8px}html[lang="ar"] .lead{font-size:20px}html[lang="ar"] .pill a{padding:9px 10px;font-size:13px}html[lang="ar"] .subpill button{font-size:12px}.subpill{left:12px;right:auto;transform:none;max-width:calc(100vw - 110px)}html[lang="ar"] .subpill{left:auto;right:12px}html[lang="ar"] .hero{min-height:700px}}
 </style>
 </head>
 <body>
@@ -313,6 +350,7 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
 <canvas id="sparks" aria-hidden="true"></canvas>
 
 <a class="brand mono" href="#top">Wael Saballyl</a>
+<nav aria-label="Language"><a class="language-switch" id="languageSwitch" href="?lang=ar" lang="ar" hreflang="ar" aria-label="عرض الموقع بالعربية">ع</a></nav>
 <nav class="pill" id="pill" aria-label="Sections">
   <span class="ind" id="ind"></span>
   <a href="#top" data-k="top" class="on">Home</a>
@@ -396,7 +434,7 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
     <div class="grid" id="grid">
 
       <div tabindex="0" role="button" class="pc" id="p-madinah" data-proj="p-madinah" data-f="data" aria-haspopup="dialog">
-        <div class="img"><img src="assets/m-overview.webp" width="1105" height="754" alt="Overview page of the Madinah dashboard" loading="lazy"><span class="open">View project →</span></div>
+        <div class="img"><img src="assets/m-overview.webp" width="1105" height="754" alt="Overview page of the Madinah dashboard" loading="lazy" decoding="async"><span class="open">View project →</span></div>
         <div class="body">
           <div class="meta mono"><span>Power BI · Data model · 2026</span><span class="dots3"><span class="fld"><i class="d-data"></i>Data</span></span></div>
           <h3>Madinah inspection visits dashboard</h3>
@@ -419,7 +457,7 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
       </div>
 
       <div tabindex="0" role="button" class="pc" id="p-radar" data-proj="p-radar" data-f="data soft it" aria-haspopup="dialog">
-        <div class="img"><img src="assets/radar-skills.webp" width="1400" height="875" alt="Masar Radar dashboard" loading="lazy"><span class="open">View project →</span></div>
+        <div class="img"><img src="assets/radar-skills.webp" width="1400" height="875" alt="Masar Radar dashboard" loading="lazy" decoding="async"><span class="open">View project →</span></div>
         <div class="body">
           <div class="meta mono"><span>Data pipeline · 2026</span><span class="dots3"><span class="fld"><i class="d-data"></i>Data</span><span class="fld"><i class="d-soft"></i>Soft</span><span class="fld"><i class="d-it"></i>IT</span></span></div>
           <h3>Masar Radar</h3>
@@ -443,7 +481,7 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
       </div>
 
       <div tabindex="0" role="button" class="pc" id="p-omni" data-proj="p-omni" data-f="soft data it" aria-haspopup="dialog">
-        <div class="img"><img src="assets/op-hero.webp" width="1400" height="875" alt="OmniPost landing page" loading="lazy"><span class="open">View project →</span></div>
+        <div class="img"><img src="assets/op-hero.webp" width="1400" height="875" alt="OmniPost landing page" loading="lazy" decoding="async"><span class="open">View project →</span></div>
         <div class="body">
           <div class="meta mono"><span>Web app · FastAPI · 2026</span><span class="dots3"><span class="fld"><i class="d-soft"></i>Soft</span><span class="fld"><i class="d-data"></i>Data</span><span class="fld"><i class="d-it"></i>IT</span></span></div>
           <h3>OmniPost</h3>
@@ -467,7 +505,7 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
       </div>
 
       <div tabindex="0" role="button" class="pc" id="p-hci" data-proj="p-hci" data-f="soft" aria-haspopup="dialog">
-        <div class="img"><img src="assets/hci.webp" width="1400" height="881" alt="Voice and gesture assistant" loading="lazy"><span class="open">View project →</span></div>
+        <div class="img"><img src="assets/hci.webp" width="1400" height="881" alt="Voice and gesture assistant" loading="lazy" decoding="async"><span class="open">View project →</span></div>
         <div class="body">
           <div class="meta mono"><span>Graduation project · 2025</span><span class="dots3"><span class="fld"><i class="d-soft"></i>Software</span></span></div>
           <h3>A desktop you run with your voice and hands</h3>
@@ -490,7 +528,7 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
       </div>
 
       <div tabindex="0" role="button" class="pc" id="p-retail" data-proj="p-retail" data-f="data" aria-haspopup="dialog">
-        <div class="img"><img src="assets/retail.webp" width="1400" height="745" alt="Retail sales Excel dashboard" loading="lazy"><span class="open">View project →</span></div>
+        <div class="img"><img src="assets/retail.webp" width="1400" height="745" alt="Retail sales Excel dashboard" loading="lazy" decoding="async"><span class="open">View project →</span></div>
         <div class="body">
           <div class="meta mono"><span>Excel · 2026</span><span class="dots3"><span class="fld"><i class="d-data"></i>Data</span></span></div>
           <h3>Retail sales dashboard in Excel</h3>
@@ -541,7 +579,7 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
       <div class="txt"><span class="n mono">Step 5 of 5</span><h3>The finished <em>dashboard</em>.</h3><p>A star schema with 2 fact tables and 6 dimensions, 23 DAX measures and five Arabic pages, from an executive summary down to single inspectors. The data is simulated for the portfolio.</p>
         <div class="tags"><span>Power BI</span><span>DAX</span><span>Power Query</span><span>Data modeling</span></div>
         <div class="btns"><a class="btn solid" href="https://github.com/WaelSaballyl/madinah-inspection-dashboard" target="_blank" rel="noopener">View repo ↗</a></div></div>
-      <div class="viz"><button class="shot" data-zoom><img src="assets/fines.webp" width="1106" height="756" alt="Fines page of the Madinah dashboard" loading="lazy"></button></div>
+      <div class="viz"><button class="shot" data-zoom><img src="assets/fines.webp" width="1106" height="756" alt="Fines page of the Madinah dashboard" loading="lazy" decoding="async"></button></div>
     </div>
   </div>
 </section>
@@ -620,6 +658,297 @@ footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;paddin
 <div class="panel" id="panel" role="dialog" aria-modal="true" aria-label="Project details"><div class="shade"></div><div class="sheet" data-lenis-prevent><button class="close" type="button" aria-label="Close">×</button><div class="content"></div></div></div>
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Enlarged screenshot"><button type="button" aria-label="Close">×</button><img alt=""></div>
 
+<script>
+// Translate text nodes, preserving icons, emphasis and project templates.
+const arabic = {
+  "Wael Saballyl · Data, software and IT": "وائل سبع الليل · بيانات وبرمجيات ودعم تقني",
+  "Hello": "أهلًا",
+  "Wael Saballyl": "وائل سبع الليل",
+  "Home": "الرئيسية",
+  "Projects": "المشاريع",
+  "About me": "عنّي",
+  "Stack": "أدواتي",
+  "Contact": "تواصل",
+  "Madinah dashboard": "لوحة المدينة",
+  "Masar Radar": "رادار مسار",
+  "Voice & gesture app": "تطبيق الصوت والإيماءات",
+  "Excel dashboard": "لوحة Excel",
+  "The Madinah story": "قصة لوحة المدينة",
+  "Wael Saballyl, data analyst, software engineer and IT support in Jeddah": "وائل سبع الليل، محلل بيانات ومهندس برمجيات ودعم تقني في جدة",
+  "Data analyst": "محلل بيانات",
+  "Software engineer": "مهندس برمجيات",
+  "IT support": "دعم تقني",
+  "I'm Wael, based in Jeddah. I turn raw data": "أنا وائل، من جدة. أحوّل البيانات الخام",
+  "into dashboards people use, and I build": "إلى لوحات يستخدمها الناس فعلًا، وأبني",
+  "the tools that feed them.": "الأدوات اللي تغذّيها بالبيانات.",
+  "I work with": "أشتغل على",
+  "Open to work": "متاح للعمل",
+  "—": "·",
+  "What I do": "مجالات شغلي",
+  "Three kinds of work,": "ثلاثة مجالات،",
+  "one person": "شخص واحد",
+  "Hiring for one of these? Start with that card. The button takes you straight to the projects that prove it.": "تبحث عن أحد هذي التخصصات؟ ابدأ من بطاقته، والزر يوصلك مباشرة للمشاريع المرتبطة به.",
+  "Data analysis": "تحليل البيانات",
+  "For a year I turned sales, inventory and distribution data into Power BI dashboards and reports that management used. I write the SQL and Python behind them, and I check every total against the source before it goes out.": "خلال سنة، حوّلت بيانات المبيعات والمخزون والتوزيع إلى لوحات Power BI وتقارير تستخدمها الإدارة. أكتب استعلامات SQL وأكواد Python اللي وراءها، وأراجع كل إجمالي مع المصدر قبل تسليم التقرير.",
+  "For: data analyst · BI analyst · reporting roles": "لوظائف: تحليل البيانات · ذكاء الأعمال · التقارير",
+  "See data projects →": "شوف مشاريع البيانات ←",
+  "Software": "برمجيات",
+  "I build tools that actually run: a FastAPI back end with about 100 endpoints that publishes to five platforms, a scheduled data pipeline, and a desktop app with my graduation team.": "أبني أدوات تعمل فعليًا: خدمة خلفية بـ FastAPI فيها قرابة 100 نقطة اتصال وتنشر على خمس منصات، ومسار بيانات مجدول، وتطبيق سطح مكتب مع فريق التخرج.",
+  "For: junior developer · backend · automation roles": "لوظائف: تطوير البرمجيات · الأنظمة الخلفية · الأتمتة",
+  "See software projects →": "شوف مشاريع البرمجيات ←",
+  "At Chalhoub Group I set up laptops, managed Microsoft 365 accounts and permissions and helped staff day to day. I also keep my own app online over HTTPS and run a scheduled data pipeline in the cloud.": "في مجموعة شلهوب جهّزت أجهزة الموظفين، وأدرت حسابات Microsoft 365 وصلاحياتها، وساعدتهم في المشاكل اليومية. وأشغّل تطبيقي على الإنترنت عبر HTTPS، ومسار بيانات مجدول على السحابة.",
+  "For: IT support · helpdesk · systems roles": "لوظائف: الدعم التقني · مكتب المساعدة · الأنظمة",
+  "See IT projects →": "شوف مشاريع الدعم التقني ←",
+  "Power BI dashboards and Excel reports I built at Kaner Group": "لوحات Power BI وتقارير Excel بنيتها في مجموعة كانر",
+  "Live": "مباشر",
+  "job postings collected by my Masar Radar pipeline": "إعلان وظيفي جمعه مسار بيانات رادار مسار",
+  "platforms OmniPost publishes to from one upload": "منصات ينشر عليها OmniPost برفع واحد",
+  "BSc": "بكالوريوس",
+  "Software Engineering, taught in English, 2026": "هندسة البرمجيات، الدراسة بالإنجليزية، 2026",
+  "Things I've": "مشاريع",
+  "built": "بنيتها",
+  "Each project is tagged Data, Software or IT. Click any card to see the problem, what I did and the result.": "كل مشروع مصنّف حسب مجاله: بيانات أو برمجيات أو دعم تقني. افتح البطاقة عشان تشوف المشكلة، وش سويت، والنتيجة.",
+  "All": "الكل",
+  "Data": "بيانات",
+  "IT": "دعم تقني",
+  "Soft": "برمجيات",
+  "View project →": "شوف المشروع ←",
+  "Power BI · Data model · 2026": "Power BI · نمذجة بيانات · 2026",
+  "Madinah inspection visits dashboard": "لوحة الزيارات الرقابية في المدينة المنورة",
+  "80,000 municipal inspections in five Arabic Power BI pages. I found that only 2.8% of 834 million riyals in fines was ever billed.": "80 ألف زيارة رقابية بلدية في خمس صفحات عربية على Power BI. اكتشفت أن 2.8% فقط من غرامات بقيمة 834 مليون ريال صدرت لها فواتير.",
+  "visits": "زيارة",
+  "violations": "مخالفة",
+  "DAX measures": "مقياس DAX",
+  "billed": "صدرت لها فواتير",
+  "Data · Power BI · 2026": "بيانات · Power BI · 2026",
+  "A Power BI report on 80,000 municipal inspections, built for the people who decide where inspectors go next.": "تقرير Power BI يغطي 80 ألف زيارة رقابية بلدية، ويساعد المسؤولين على تحديد وجهة الزيارات القادمة.",
+  "Problem": "المشكلة",
+  "Two Excel sheets at different levels of detail gave fine totals 725 million riyals apart.": "ورقتا Excel بمستويين مختلفين من التفاصيل، وبين إجمالي الغرامات فيهما فرق 725 مليون ريال.",
+  "I built": "وش بنيت",
+  "A star schema with 2 fact tables and 6 dimensions,": "نموذج نجمي بجدولي وقائع وستة أبعاد، مع",
+  "23 DAX measures": "23 مقياس DAX",
+  "and five Arabic pages, from an executive summary down to single inspectors.": "وخمس صفحات عربية، من الملخص التنفيذي إلى تفاصيل كل مراقب.",
+  "Result": "النتيجة",
+  "Totals that match the source, and the finding that mattered most:": "إجماليات تطابق المصدر، والاكتشاف الأهم:",
+  "only 2.8% of fines were billed.": "2.8% فقط من الغرامات صدرت لها فواتير.",
+  "Data modeling": "نمذجة البيانات",
+  "View repo ↗": "مستودع المشروع ↗",
+  "Read the full story": "اقرأ القصة كاملة",
+  "Data pipeline · 2026": "مسار بيانات · 2026",
+  "A pipeline that reads data-job postings from five public APIs on a daily schedule and shows which skills Gulf employers actually ask for.": "مسار بيانات يقرأ يوميًا إعلانات وظائف البيانات من خمس واجهات API عامة، ويوضح المهارات المطلوبة فعليًا عند جهات التوظيف في الخليج.",
+  "collected": "إعلان مجمّع",
+  "open now": "متاح حاليًا",
+  "in the Gulf": "في الخليج",
+  "Data · Software · IT · 2026": "بيانات · برمجيات · دعم تقني · 2026",
+  "I was job hunting and wanted to know which skills Gulf data jobs actually ask for, so I built something that reads the postings for me.": "وأنا أبحث عن وظيفة، كنت أبغى أعرف المهارات المطلوبة في وظائف البيانات بالخليج، فبنيت أداة تقرأ الإعلانات عنّي.",
+  "Pipeline": "مسار البيانات",
+  "Pulls postings from": "يجمع الإعلانات من",
+  "5 public job APIs on a daily schedule": "خمس واجهات API عامة للوظائف، يوميًا",
+  ", removes duplicates, and has an AI model read each posting once to pull out the skills and the level.": "، ويحذف التكرار. بعدها يقرأ نموذج ذكاء اصطناعي كل إعلان مرة واحدة لاستخراج المهارات والمستوى المطلوب.",
+  "Runs on": "التشغيل",
+  "A scheduled GitHub Actions job, with the API keys kept as repository secrets. The website rebuilds itself after every run.": "مهمة مجدولة على GitHub Actions، ومفاتيح API محفوظة ضمن أسرار المستودع. يُعاد بناء الموقع تلقائيًا بعد كل تشغيل.",
+  "Shows": "وش يوضح",
+  "For entry-level data jobs,": "في وظائف البيانات للمبتدئين، يظهر كل من",
+  "Excel and SQL": "Excel وSQL",
+  "each appear in almost half the postings. Python comes third.": "في قرابة نصف الإعلانات، وتأتي Python ثالثًا.",
+  "Open the live site ↗": "افتح الموقع المباشر ↗",
+  "Code": "الكود",
+  "Web app · FastAPI · 2026": "تطبيق ويب · FastAPI · 2026",
+  "Upload a video once and it goes out to YouTube, Instagram, TikTok, Facebook and Threads. Built and deployed on my own.": "ارفع الفيديو مرة واحدة ويُنشر على YouTube وInstagram وTikTok وFacebook وThreads. بنيته وشغّلته بنفسي.",
+  "platforms": "منصات",
+  "API endpoints": "نقطة اتصال API",
+  "tests": "اختبار",
+  "Software · Data · IT · 2026": "برمجيات · بيانات · دعم تقني · 2026",
+  "Posting one video to five platforms by hand used to take my whole evening. Now it's one upload.": "نشر فيديو واحد يدويًا على خمس منصات كان يأخذ أمسيتي كاملة. الحين أرفعه مرة واحدة.",
+  "A FastAPI back end with": "خدمة خلفية بـ FastAPI فيها",
+  "about 100 endpoints": "قرابة 100 نقطة اتصال",
+  "over a 14-table SQLite database. It publishes for real to YouTube, Instagram, TikTok, Facebook and Threads through each platform's own API, with OAuth sign-in, hashed passwords and a background worker that retries failed jobs.": "وقاعدة SQLite من 14 جدولًا. تنشر فعليًا على YouTube وInstagram وTikTok وFacebook وThreads عبر API كل منصة، مع تسجيل دخول OAuth وكلمات مرور مخزنة بالتجزئة وعامل خلفي يعيد محاولة المهام المتعثرة.",
+  "Measured": "القياس",
+  "I tested video quality (VMAF) at four bitrates before choosing one. At 30 Mbps it scores": "اختبرت جودة الفيديو بمقياس VMAF عند أربعة معدلات بت قبل اختيار المناسب. عند 30 Mbps حقق",
+  "94 out of 100": "94 من 100",
+  ", and a 4 GB clip becomes 260 MB. Encoding on the GPU cut a test clip from 57.6 to 23.5 seconds.": "، وتحول مقطع بحجم 4 GB إلى 260 MB. والترميز ببطاقة الرسوميات خفّض وقت مقطع الاختبار من 57.6 إلى 23.5 ثانية.",
+  "My own PC acts as the server, reachable over HTTPS at a fixed address through Tailscale Funnel, so each platform's sign-in works from anywhere. A deploy script for an Ubuntu server (Caddy, firewall, systemd) is ready for when it moves. Each user gets a separate workspace, with": "جهازي الشخصي يعمل كخادم، ويمكن الوصول له عبر HTTPS بعنوان ثابت باستخدام Tailscale Funnel، فيعمل تسجيل دخول المنصات من أي مكان. جهزت سكربت نشر لخادم Ubuntu يشمل Caddy والجدار الناري وsystemd عند الانتقال له. لكل مستخدم مساحة عمل مستقلة، مع",
+  "35 tests": "35 اختبارًا",
+  "covering isolation, uploads and invites.": "تغطي عزل المساحات والرفع والدعوات.",
+  "VMAF score": "درجة VMAF",
+  "faster encoding": "تسريع الترميز",
+  "Open the site ↗": "افتح الموقع ↗",
+  "Graduation project · 2025": "مشروع التخرج · 2025",
+  "A desktop you run with your voice and hands": "تحكّم بالكمبيوتر بصوتك وحركة يدك",
+  "Say \"Jarvis\" and give a command, or use one of 8 hand gestures to click, scroll and take screenshots. Team of five.": "قل «Jarvis» وأعطِ أمرًا، أو استخدم واحدة من 8 إيماءات للنقر والتمرير والتقاط الشاشة. مشروع فريق من خمسة أشخاص.",
+  "gestures": "إيماءات",
+  "teammates": "أعضاء الفريق",
+  "Software · Graduation project · 2025": "برمجيات · مشروع التخرج · 2025",
+  "Say \"Jarvis\" and give a command, or use one of 8 hand gestures to move the cursor, click, scroll and take screenshots.": "قل «Jarvis» وأعطِ أمرًا، أو استخدم واحدة من 8 إيماءات لتحريك المؤشر والنقر والتمرير والتقاط الشاشة.",
+  "Team": "الفريق",
+  "Five of us.": "كنا خمسة.",
+  "I supported the integration layer": "ساهمت في طبقة الربط",
+  "between the Python engine and the desktop app, and the logic that combines voice and gesture results into one action.": "بين محرك Python وتطبيق سطح المكتب، وفي المنطق الذي يجمع نتائج الصوت والإيماءات في إجراء واحد.",
+  "How": "كيف يعمل",
+  "Gestures are read with MediaPipe, speech is turned into text with AssemblyAI, and GPT-4.1 works out what the user meant.": "تقرأ MediaPipe الإيماءات، وتحول AssemblyAI الكلام إلى نص، ويحدد GPT-4.1 قصد المستخدم.",
+  "Shipped": "التسليم",
+  "An Electron and React desktop app with a Windows installer.": "تطبيق سطح مكتب بـ Electron وReact، مع ملف تثبيت لويندوز.",
+  "Retail sales dashboard in Excel": "لوحة مبيعات التجزئة في Excel",
+  "About 50,000 sales in one workbook that answers eight business questions. Every chart follows the slicers.": "قرابة 50 ألف عملية بيع في ملف واحد يجيب عن ثمانية أسئلة تجارية. كل الرسوم تتحدث مع عوامل التصفية.",
+  "sales": "عملية بيع",
+  "online share": "حصة البيع الإلكتروني",
+  "Data · Excel · 2026": "بيانات · Excel · 2026",
+  "About 50,000 sales in one workbook, built to answer eight business questions. Every chart follows the slicers.": "قرابة 50 ألف عملية بيع في ملف واحد، بنيته للإجابة عن ثمانية أسئلة تجارية. كل الرسوم تتحدث مع عوامل التصفية.",
+  "Why Excel": "ليش Excel",
+  "So anyone in the business can open it and use it, no extra licence needed.": "عشان أي شخص في الشركة يقدر يفتحه ويستخدمه، بدون ترخيص إضافي.",
+  "Found": "وش لقيت",
+  "The online channel brings in": "البيع الإلكتروني يمثل",
+  "93% of sales": "93% من المبيعات",
+  ", and loyal customers about half of the revenue.": "، والعملاء الأوفياء يحققون قرابة نصف الإيرادات.",
+  "PivotTables": "الجداول المحورية",
+  "Slicers": "عوامل التصفية",
+  "The story behind project 01": "قصة المشروع الأول",
+  "The 725 million": "فرق بقيمة",
+  "riyal gap": "725 مليون ريال",
+  "What happened when I built the Madinah dashboard, in five steps.": "وش صار لما بنيت لوحة المدينة المنورة، في خمس خطوات.",
+  "Step 1 of 5": "الخطوة 1 من 5",
+  "A tidy sheet called": "ورقة مرتبة اسمها",
+  "Visits": "الزيارات",
+  "80,000 rows, one per inspection. Add up the fines column and you get 109 million riyals. It looked finished.": "80 ألف صف، صف لكل زيارة. مجموع عمود الغرامات 109 ملايين ريال. ظاهريًا، كل شيء جاهز.",
+  "SAR fined": "ريال غرامات",
+  "Source · Visits sheet · 79,700 rows": "المصدر · ورقة الزيارات · 79,700 صف",
+  "Step 2 of 5": "الخطوة 2 من 5",
+  "Every visit had": "كل زيارة فيها",
+  "exactly one": "مخالفة واحدة",
+  "violation.": "بالضبط.",
+  "All 80,000 of them. Inspectors don't walk into a grocery and find exactly one problem, every single time. That pattern was the clue.": "في كل الزيارات الـ80 ألف. مو معقول المراقب يدخل محل ويلقى مخالفة واحدة بالضبط في كل مرة. هذا النمط كان أول خيط.",
+  "That's not a pattern. That's a shortcut.": "البيانات كانت مختصرة أكثر من اللازم.",
+  "Step 3 of 5": "الخطوة 3 من 5",
+  "The rest had been": "بقية المخالفات كانت",
+  "dropped": "محذوفة",
+  "The second sheet held every violation, 454,000 rows. Same inspections, counted at the right level. The real total was 834 million.": "الورقة الثانية فيها كل المخالفات: 454 ألف صف. نفس الزيارات، لكن العد على المستوى الصحيح. الإجمالي الحقيقي كان 834 مليون ريال.",
+  "Source · Violations sheet · 454,000 rows": "المصدر · ورقة المخالفات · 454,000 صف",
+  "Step 4 of 5": "الخطوة 4 من 5",
+  "Only": "فقط",
+  "was ever billed.": "صدرت لها فواتير.",
+  "That became the headline of the dashboard. The problem wasn't how much was fined. It was that almost none of it turned into an invoice.": "هذي صارت أهم نتيجة في اللوحة. الغرامات بلغت 834 مليون ريال، لكن الجزء اللي تحوّل لفواتير كان ضئيلًا جدًا.",
+  "Billed": "صدرت لها فواتير",
+  "834M fined": "834 مليون ريال غرامات",
+  "Step 5 of 5": "الخطوة 5 من 5",
+  "The finished": "وهذي",
+  "dashboard": "اللوحة النهائية",
+  "A star schema with 2 fact tables and 6 dimensions, 23 DAX measures and five Arabic pages, from an executive summary down to single inspectors. The data is simulated for the portfolio.": "نموذج نجمي بجدولي وقائع وستة أبعاد، و23 مقياس DAX وخمس صفحات عربية، من الملخص التنفيذي إلى تفاصيل كل مراقب. البيانات محاكاة لأغراض معرض الأعمال.",
+  "How I can": "كيف أقدر",
+  "help your team": "أفيد فريقك",
+  "Turn questions into reports": "أحوّل الأسئلة إلى تقارير",
+  "Management asks something, I find the data, build the Power BI or Excel view, and keep it updated.": "الإدارة تسأل، وأنا أوصل للبيانات وأبني التقرير في Power BI أو Excel وأحافظ على تحديثه.",
+  "Check numbers before they go out": "أراجع الأرقام قبل تسليمها",
+  "I compare every total against an independent query, so a wrong figure gets caught by me and not by a manager.": "أقارن كل إجمالي باستعلام مستقل، عشان أكتشف الخطأ وأصححه قبل وصول التقرير للإدارة.",
+  "Automate the slow parts": "أؤتمت المهام المتكررة",
+  "If a report or task repeats, I write the Python, SQL or scheduled job that does it, like my daily job-market pipeline.": "إذا فيه تقرير أو مهمة تتكرر، أكتب لها كود Python أو SQL أو مهمة مجدولة، مثل مسار بيانات سوق العمل اليومي اللي بنيته.",
+  "Keep people working": "أساعد الفريق يكمل شغله",
+  "Laptops, Microsoft 365 accounts and permissions, learned on the job at Chalhoub Group, plus the basics of Linux and networking.": "تجهيز الأجهزة وحسابات Microsoft 365 والصلاحيات، من تدريبي في مجموعة شلهوب، ومعها أساسيات Linux والشبكات.",
+  "I studied software engineering, then ended up in data because I kept asking": "درست هندسة البرمجيات، واتجهت للبيانات لأنّي كنت دائمًا أسأل:",
+  "where the numbers came from": "من وين جت هذي الأرقام؟",
+  "That mix is the point. I can read a business question, build the dashboard that answers it, and write the code when the right tool doesn't exist yet. I'm in Jeddah and available now.": "هذا الجمع يفيدني في الشغل. أفهم سؤال العمل، وأبني لوحة تجاوب عليه، وأكتب الكود إذا الأداة المناسبة ما كانت موجودة. أنا في جدة ومتاح للعمل حاليًا.",
+  "Data Analyst": "محلل بيانات",
+  "· Kaner Group, Northern Cyprus · remote, part-time": "· مجموعة كانر، شمال قبرص · عن بُعد، دوام جزئي",
+  "Wrote SQL and Python to collect, clean and analyze sales, inventory and distribution data for a group of 700+ staff. Built 10+ Power BI dashboards and worked directly with management to turn their questions into reports.": "كتبت SQL وPython لجمع وتنظيف وتحليل بيانات المبيعات والمخزون والتوزيع لمجموعة تضم أكثر من 700 موظف. بنيت أكثر من 10 لوحات Power BI، وعملت مباشرة مع الإدارة لتحويل أسئلتهم إلى تقارير.",
+  "Summer 2025": "صيف 2025",
+  "IT Support Trainee": "متدرب دعم تقني",
+  "· Radwa Trading (Chalhoub Group), Jeddah": "· رضوى التجارية (مجموعة شلهوب)، جدة",
+  "Set up staff laptops with the operating system, drivers and applications, and managed user accounts and permissions in Windows and Microsoft 365.": "جهّزت أجهزة الموظفين بنظام التشغيل والتعريفات والبرامج، وأدرت حسابات المستخدمين وصلاحياتهم في Windows وMicrosoft 365.",
+  "Inventory Auditor": "مدقق مخزون",
+  "· Sephora, Jeddah · project-based": "· سيفورا، جدة · عمل بنظام المشاريع",
+  "Store stock counts checked against system records.": "مطابقة الجرد الفعلي لمخزون المتجر مع سجلات النظام.",
+  "Education": "التعليم",
+  "BSc Software Engineering": "بكالوريوس هندسة البرمجيات",
+  "· Cyprus International University": "· جامعة قبرص الدولية",
+  "Taught in English. Graduation project: the voice and gesture desktop app.": "الدراسة باللغة الإنجليزية. مشروع التخرج: تطبيق سطح مكتب للتحكم بالصوت والإيماءات.",
+  "Google Data Analytics Professional Certificate": "شهادة Google المهنية في تحليل البيانات",
+  "Verify on Coursera ↗": "تحقق من الشهادة على Coursera ↗",
+  "My tools,": "أدواتي،",
+  "at a glance": "بنظرة سريعة",
+  "Grouped by the kind of work. Under each one is where I actually used it.": "مرتبة حسب مجال العمل. وتحت كل أداة مذكور وين استخدمتها فعليًا.",
+  "Madinah, Kaner": "لوحة المدينة، كانر",
+  "Retail dashboard, Kaner": "لوحة التجزئة، كانر",
+  "Kaner, Masar Radar": "كانر، رادار مسار",
+  "Radar, Kaner": "رادار مسار، كانر",
+  "Data cleaning": "تنظيف البيانات",
+  "Google certificate": "شهادة Google",
+  "OmniPost, this site": "OmniPost، هذا الموقع",
+  "OmniPost, Radar": "OmniPost، رادار مسار",
+  "Graduation project": "مشروع التخرج",
+  "C# · unit tests": "C# · اختبارات وحدات",
+  "Bank system, 18 tests": "نظام بنكي، 18 اختبارًا",
+  "Every project": "كل المشاريع",
+  "Chalhoub training": "تدريب شلهوب",
+  "Accounts · access": "الحسابات · الصلاحيات",
+  "Deploy script, coursework": "سكربت النشر، الدراسة الجامعية",
+  "Radar, daily": "رادار مسار، يوميًا",
+  "HTTPS · tunnels": "HTTPS · الأنفاق",
+  "Networking basics": "أساسيات الشبكات",
+  "Let's": "خلّنا",
+  "talk": "نتواصل",
+  "I'm in Jeddah, my iqama is transferable, and I'm open to relocating. Email is the quickest way to reach me.": "أنا في جدة، إقامتي قابلة للنقل ومستعد للانتقال. الإيميل أسرع طريقة تتواصل فيها معي.",
+  "Send an email": "أرسل إيميل",
+  "© 2026 Wael Saballyl": "© 2026 وائل سبع الليل",
+  "Built by hand, mostly": "مبني بيدي، تقريبًا كله",
+  "Sections": "أقسام الموقع",
+  "Filter projects": "تصفية المشاريع",
+  "Project details": "تفاصيل المشروع",
+  "Enlarged screenshot": "صورة مكبّرة",
+  "Close": "إغلاق",
+  "Overview page of the Madinah dashboard": "صفحة النظرة العامة في لوحة المدينة المنورة",
+  "Overview page": "صفحة النظرة العامة",
+  "Fines page": "صفحة الغرامات",
+  "Inspectors page": "صفحة المراقبين",
+  "Masar Radar dashboard": "لوحة رادار مسار",
+  "Skills route and live numbers": "صفحة المهارات والأرقام المباشرة",
+  "Open postings": "الوظائف المتاحة",
+  "Masar Radar on a phone": "رادار مسار على الجوال",
+  "OmniPost landing page": "الصفحة الرئيسية لـ OmniPost",
+  "Upload screen": "شاشة رفع الملفات",
+  "OmniPost numbers section": "قسم أرقام OmniPost",
+  "Voice and gesture assistant": "مساعد التحكم بالصوت والإيماءات",
+  "The assistant's dashboard": "لوحة تحكم المساعد",
+  "The eight hand gestures": "إيماءات اليد الثماني",
+  "Retail sales Excel dashboard": "لوحة مبيعات التجزئة في Excel",
+  "Fines page of the Madinah dashboard": "صفحة الغرامات في لوحة المدينة المنورة"
+};
+const isArabic = document.documentElement.lang === 'ar';
+const panelDirection = isArabic ? -1 : 1;
+if (isArabic) {
+  function translateTree(root) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: node => node.parentElement?.closest('script,style') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+    });
+    let node;
+    while ((node = walker.nextNode())) {
+      const original = node.textContent.trim();
+      if (Object.prototype.hasOwnProperty.call(arabic, original)) node.textContent = node.textContent.replace(original, arabic[original]);
+    }
+    root.querySelectorAll('[aria-label],[alt],[title]').forEach(el => {
+      ['aria-label', 'alt', 'title'].forEach(attr => {
+        const value = el.getAttribute(attr);
+        if (Object.prototype.hasOwnProperty.call(arabic, value)) el.setAttribute(attr, arabic[value]);
+      });
+    });
+    root.querySelectorAll('template').forEach(t => translateTree(t.content));
+  }
+  translateTree(document.body);
+  document.title = arabic['Wael Saballyl · Data, software and IT'];
+  const description = 'محلل بيانات ومهندس برمجيات في جدة. لوحات بيانات ومسارات معالجة وأدوات بنيتها، مع قصة كل مشروع وما تعلمته منه.';
+  document.querySelector('meta[name="description"]').content = description;
+  document.querySelector('meta[property="og:title"]').content = document.title;
+  document.querySelector('meta[property="og:description"]').content = description;
+}
+const languageSwitch = document.getElementById('languageSwitch');
+const otherLanguage = isArabic ? 'en' : 'ar';
+const languageURL = new URL(location.href);
+languageURL.searchParams.set('lang', otherLanguage);
+languageSwitch.href = languageURL.pathname + languageURL.search + languageURL.hash;
+languageSwitch.textContent = isArabic ? 'EN' : 'ع';
+languageSwitch.lang = languageSwitch.hreflang = otherLanguage;
+languageSwitch.setAttribute('aria-label', isArabic ? 'View site in English' : 'عرض الموقع بالعربية');
+try { localStorage.setItem('portfolio-language', document.documentElement.lang); } catch (e) {}
+languageSwitch.addEventListener('click', () => { try { localStorage.setItem('portfolio-language', otherLanguage); } catch (e) {} });
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
@@ -653,7 +982,7 @@ function slider(bar, ind, pad) {
   return (el, instant) => {
     if (!el) return;
     const br = bar.getBoundingClientRect(), r = el.getBoundingClientRect();
-    gsap.to(ind, {x: r.left - br.left - pad + bar.scrollLeft, width: r.width, duration: instant ? 0 : .55, ease: 'expo.out'});
+    gsap.to(ind, {x: r.left - br.left - bar.clientLeft - pad + bar.scrollLeft, width: r.width, duration: instant || reduce ? 0 : .55, ease: 'expo.out', overwrite: 'auto'});
   };
 }
 const pill = document.getElementById('pill'), navLinks = [...pill.querySelectorAll('a')];
@@ -678,7 +1007,7 @@ function setProj(id) {
   activeProj = id;
   const b = subBtns.find(x => x.dataset.go === id);
   subBtns.forEach(x => x.classList.toggle('on', x === b));
-  if (b) { sub.scrollTo({left: b.offsetLeft - sub.clientWidth / 2 + b.offsetWidth / 2, behavior: 'smooth'}); setTimeout(() => moveSind(b), 80); }
+  if (b) { sub.scrollTo({left: sub.scrollLeft + b.getBoundingClientRect().left - sub.getBoundingClientRect().left - sub.clientWidth / 2 + b.offsetWidth / 2, behavior: 'smooth'}); setTimeout(() => moveSind(b), 80); }
 }
 gsap.set(sub, {autoAlpha: 0, y: -12});
 const secs = [...document.querySelectorAll('[data-sec]')];
@@ -715,8 +1044,8 @@ function build() {
   const off = document.createElement('canvas'), o = off.getContext('2d');
   off.width = W; off.height = H;
   const fs = Math.min(W * (W < 700 ? .34 : .28), H * .44);
-  o.font = `400 ${fs}px "Instrument Serif"`; o.textAlign = 'center'; o.textBaseline = 'middle';
-  o.fillText('Wael', W / 2, H * (W < 700 ? .3 : .34));
+  o.font = isArabic ? `500 ${fs * .85}px "Noto Sans Arabic"` : `400 ${fs}px "Instrument Serif"`; o.textAlign = 'center'; o.textBaseline = 'middle';
+  o.fillText(isArabic ? 'وائل' : 'Wael', W / 2, H * (W < 700 ? .3 : .34));
   const data = o.getImageData(0, 0, W, H).data, gap = W < 700 ? 6 : 5, next = [];
   for (let y = 0; y < H; y += gap) for (let x = 0; x < W; x += gap)
     if (data[(y * W + x) * 4 + 3] > 128) next.push([x, y]);
@@ -748,7 +1077,7 @@ function start() { if (!running) { running = true; requestAnimationFrame(frame);
 new IntersectionObserver(([e]) => { heroOn = e.isIntersecting; if (heroOn && pts.length) start(); }).observe(cv);
 const introDone = new Promise(res => { window.__introDone = res; });
 if (document.documentElement.classList.contains('seen') || reduce) window.__introDone();
-Promise.all([document.fonts.load('400 100px "Instrument Serif"'), introDone]).then(() => { build(); start(); gsap.to(intro, {v: 1, duration: 2.2, ease: 'power3.out'}); });
+Promise.all([document.fonts.load(isArabic ? '500 100px "Noto Sans Arabic"' : '400 100px "Instrument Serif"'), introDone]).then(() => { build(); start(); gsap.to(intro, {v: 1, duration: 2.2, ease: 'power3.out'}); });
 addEventListener('resize', () => { clearTimeout(window._rb); window._rb = setTimeout(build, 200); });
 cv.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
 cv.addEventListener('pointerleave', () => { mouse.x = mouse.y = -9999; });
@@ -763,6 +1092,7 @@ if (!reduce) {
 // ---------- small text effects ----------
 const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*';
 function decrypt(el) {
+  if (isArabic) return; // Preserve connected Arabic letterforms.
   const target = el.textContent; let f = 0;
   const id = setInterval(() => {
     el.textContent = target.split('').map((c, i) => c === ' ' || i < f / 2 ? c : glyphs[Math.random() * glyphs.length | 0]).join('');
@@ -773,7 +1103,7 @@ if (!reduce) document.querySelectorAll('section .eyebrow, .step .n').forEach(el 
   ScrollTrigger.create({trigger: el, start: 'top 90%', once: true, onEnter: () => decrypt(el)}));
 document.querySelectorAll('.h2').forEach(h => {
   h.innerHTML = h.innerHTML.split(/(<br>|<em>.*?<\/em>|\s+)/).map(p => !p || /^\s+$/.test(p) || p === '<br>' ? p : `<span class="bw">${p}</span>`).join('');
-  if (!reduce) gsap.from(h.querySelectorAll('.bw'), {opacity: 0, filter: 'blur(12px)', y: 24, stagger: .07, duration: 1, ease: 'expo.out', clearProps: 'filter', scrollTrigger: {trigger: h, start: 'top 88%'}});
+  if (!reduce) gsap.from(h.querySelectorAll('.bw'), {opacity: 0, y: 24, stagger: .07, duration: 1, ease: 'expo.out', scrollTrigger: {trigger: h, start: 'top 88%', toggleActions: 'play none none reverse'}});
 });
 
 // ---------- what I do ----------
@@ -836,7 +1166,7 @@ function openPanel(card) {
   content.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); closePanel(); setTimeout(() => goTo(document.querySelector(a.getAttribute('href'))), 350); }));
   if (!reduce) {
     gsap.fromTo(panel.querySelector('.shade'), {opacity: 0}, {opacity: 1, duration: .4});
-    gsap.fromTo(sheet, {xPercent: 100}, {xPercent: 0, duration: .6, ease: 'expo.out'});
+    gsap.fromTo(sheet, {xPercent: 100 * panelDirection}, {xPercent: 0, duration: .6, ease: 'expo.out'});
     gsap.from(content.children, {x: 40, opacity: 0, stagger: .05, duration: .7, ease: 'expo.out', delay: .15});
   }
   panel.querySelector('.close').focus();
@@ -845,7 +1175,7 @@ function closePanel() {
   if (!panel.classList.contains('on')) return;
   const done = () => { panel.classList.remove('on'); lenis && lenis.start(); document.documentElement.style.overflow = ''; opener && opener.focus({preventScroll: true}); };
   if (reduce) return done();
-  gsap.to(sheet, {xPercent: 100, duration: .45, ease: 'expo.in', onComplete: done});
+  gsap.to(sheet, {xPercent: 100 * panelDirection, duration: .45, ease: 'expo.in', onComplete: done});
   gsap.to(panel.querySelector('.shade'), {opacity: 0, duration: .4});
 }
 cards.forEach(c => { c.addEventListener('click', () => openPanel(c)); c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(c); } }); });
@@ -865,7 +1195,7 @@ addEventListener('keydown', e => { if (e.key !== 'Escape') return; if (lb.classL
 const counts = [6,4,8,5,7,3,9,5,6,4,7,5];
 document.querySelectorAll('.case .cards').forEach(c => {
   const all = c.dataset.mode === 'all';
-  c.innerHTML = counts.map((n, i) => `<div class="card"><small>VISIT ${String(i + 1).padStart(2, '0')}</small><div class="d">` +
+  c.innerHTML = counts.map((n, i) => `<div class="card"><small>${isArabic ? "زيارة" : "VISIT"} ${String(i + 1).padStart(2, '0')}</small><div class="d">` +
     Array.from({length: all ? n : 1}, (_, j) => `<i class="${j ? 'x' : 'k'}"></i>`).join('') + '</div></div>').join('');
 });
 gsap.utils.toArray('.step').forEach(step => {
@@ -965,11 +1295,16 @@ if (!reduce) document.querySelectorAll('.curve div').forEach(c => gsap.fromTo(c,
 
 // ---------- images open up and settle as they come into view (after darkroom.engineering) ----------
 if (!reduce) document.querySelectorAll('.pc .img, .case .shot').forEach(box => {
-  gsap.fromTo(box, {clipPath: 'inset(9% 7% 9% 7% round 22px)'}, {clipPath: 'inset(0% 0% 0% 0% round 16px)', ease: 'none',
+  // the frame grows with transform only (no clip-path), so the GPU handles it without repainting
+  gsap.fromTo(box, {scale: .9}, {scale: 1, ease: 'none',
     scrollTrigger: {trigger: box, start: 'top 98%', end: 'top 45%', scrub: true}});
   gsap.fromTo(box.querySelector('img'), {scale: 1.18}, {scale: 1, ease: 'none',
     scrollTrigger: {trigger: box, start: 'top bottom', end: 'bottom top', scrub: true}});
 });
+
+// decode the big screenshots while the page is idle, so arriving at them doesn't stall a frame
+const idle = window.requestIdleCallback || (f => setTimeout(f, 1200));
+addEventListener('load', () => idle(() => document.querySelectorAll('img[loading="lazy"]').forEach(img => { img.loading = 'eager'; img.decode().catch(() => {}); })));
 
 // ---------- hero content drifts up slower than the page ----------
 if (!reduce) gsap.to('.hero-meta', {y: -120, opacity: .2, ease: 'none', scrollTrigger: {trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true}});
